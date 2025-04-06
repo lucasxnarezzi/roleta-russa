@@ -1,28 +1,36 @@
-rodada = 1
-alert("Seja mal-vindo a Roleta Russa!")
+const input = document.getElementById("escolha");
+const botao = document.getElementById("botao");
+const mensagem = document.getElementById("mensagem");
+const aviso = document.getElementById("aviso");
 
-while (rodada <= 6) {
-    escolhaJogador = prompt("Rodada " + rodada +" - Escolha entre 1-6")
-    opcoes = ["1", "2", "3", "4", "5", "6"]
-    
-    if (!opcoes.includes(escolhaJogador)){
-        alert("buraco errado!")
-        continue;
-    }
-    
-    if (rodada === 6){
-        tiro = escolhaJogador
-        alert("Morreu otário! A bala estava no " + escolhaJogador)
-        break;
-    }
+let rodada = 1; // Inicializa a rodada
 
-    tiro = Math.floor(Math.random() * 6) + 1
-    
-    if (escolhaJogador == tiro) {
-        alert("Você morreu!🤯🩸🔫")
-        break;
-    } else {
-        alert("Você sobreviveu, a bala estava no " + tiro)
+aviso.innerHTML = `Seja mal-vindo ao jogo da morte! Você tem 6 rodadas para sobreviver!`;
+
+botao.addEventListener("click", () => {
+  const escolhaJogador = parseInt(input.value);
+
+  const opcoes = [1, 2, 3, 4, 5, 6, 7];
+  if (!opcoes.includes(escolhaJogador)) {
+    mensagem.innerHTML = "Escolha um número entre 1 e 6!";
+    return;
+  }
+  
+  const tiro = Math.floor(Math.random() * 6) + 1;
+
+  if (escolhaJogador !== tiro) {
+    mensagem.innerHTML = `Rodada ${rodada} passou, o pc escolheu ${tiro}.`;
+    rodada++; // Incrementa a rodada
+    if (rodada >= 7) {
+      mensagem.innerHTML = "Você sobreviveu a todas as rodadas! 🎉";
+      rodada = 1; // Reinicia o jogo
     }
-    rodada++
-}
+  } else {
+    mensagem.innerHTML = `Você morreu na rodada ${rodada}! 💀`;
+    rodada = 1; // Reinicia o jogo
+  }
+
+  if (rodada >= 2) {
+    aviso.innerHTML = `Você está na rodada ${rodada}.`;     
+}  
+});
